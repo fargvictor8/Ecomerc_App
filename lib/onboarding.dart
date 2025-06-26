@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:untitled/Components/color.dart';
 import 'package:untitled/Components/onboarding_data.dart';
 import 'package:untitled/core/Routing/app_router.dart';
+import 'package:untitled/core/Routing/routes.dart';
+import 'package:untitled/core/extensions/navigation_extensions.dart';
 import 'package:untitled/features/presentation/view/widgets/home_Page.dart';
 
 
@@ -108,28 +110,20 @@ class _OnboardingPageState extends State<OnboardingPage> {
         color: primaryColor
       ),
 
-      child: TextButton(
-        onPressed: () {
+        child: TextButton(onPressed: (){
           setState(() {
             if (currentIndex != controller.items.length - 1) {
               currentIndex++;
-            } else {
-              // initialRoute : Route.HomePage,
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
+            }else{
+              context.pushNamed(Routes.HomePage);
             }
           });
+
         },
-        child: Text(
-          currentIndex == controller.items.length - 1 ? "Get Started" : "Continue",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+            child: Text(currentIndex == controller.items.length -1?  "Get Started" : "Continue",
+                style: TextStyle(color: Colors.white,
+                    fontWeight: FontWeight.bold))
+        )
     );
   }
 

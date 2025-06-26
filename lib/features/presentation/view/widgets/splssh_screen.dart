@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:untitled/core/Routing/routes.dart';
+import 'package:untitled/core/extensions/navigation_extensions.dart';
 
 import '../../../../onboarding.dart';
 
@@ -9,13 +13,19 @@ class SplsshScreen extends StatefulWidget {
   State<SplsshScreen> createState() => _SplsshScreenState();
 }
 
-class _SplsshScreenState extends State<SplsshScreen> {
+class _SplsshScreenState extends State<SplsshScreen> with SingleTickerProviderStateMixin{
+
+  double opacity = 0.0;
 
   @override
   void initState(){
-    Future.delayed(Duration(seconds: 2),(){
-      Navigator.push(context,
-          MaterialPageRoute(builder: (c) => OnboardingPage()));
+    Timer(Duration(milliseconds: 1000),(){
+    setState(() {
+      opacity = 1.0;
+    });
+    });
+    Timer(Duration(seconds: 5),(){
+      context.pushNamed(Routes.OnboardingPage);
     });
   }
 
@@ -23,16 +33,16 @@ class _SplsshScreenState extends State<SplsshScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-     body: Container(
-       width: double.infinity,
-       height: double.infinity,
-       child:  Column(
-         mainAxisAlignment: MainAxisAlignment.center,
-         children: [
-           Image.asset("assets/Logo/logoipsum.png"),
-         ],
+     body: Center(
+       child: AnimatedOpacity(
+         opacity: opacity,
+         duration: Duration(seconds: 4),
+         child: Padding(
+             padding: EdgeInsets.symmetric(horizontal: 50),
+           child:  Image.asset("assets/Logo/logoipsum.png"),
+         ),
        ),
-     ),
+     )
     );
   }
 }

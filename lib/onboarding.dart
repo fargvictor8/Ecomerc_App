@@ -24,6 +24,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return Scaffold(
       body: Column(
         children: [
+          appbar(),
           body(),
           buildDots(),
           button()
@@ -31,6 +32,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
       ),
     );
   }
+
+
+  //APP Bar
+
 
   //Body
 
@@ -124,6 +129,37 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 style: TextStyle(color: Colors.white,
                     fontWeight: FontWeight.bold))
         )
+    );
+  }
+
+  Widget appbar(){
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Row(
+          children: [
+            Text("1",style: TextStyle(
+              fontSize: 20,
+              color: Colors.black
+            ),),
+
+            Text("/3",style: TextStyle(
+                fontSize: 20,
+                color: Colors.grey.shade800
+            ),),
+            Spacer(),
+
+            TextButton(
+                onPressed: (){
+                  context.pushNamed(Routes.HomePage);
+                },
+                child: Text("Skip",style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black
+                ),))
+          ],
+        ),
+      ),
     );
   }
 

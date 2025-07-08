@@ -120,7 +120,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
             if (currentIndex != controller.items.length - 1) {
               currentIndex++;
             }else{
-              context.pushNamed(Routes.HomePage);
+             // context.pushNamed(Routes.HomePage);
+              context.pushNamed(Routes.Login);
             }
           });
 
@@ -151,7 +152,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
             TextButton(
                 onPressed: (){
-                  context.pushNamed(Routes.HomePage);
+                //  context.pushNamed(Routes.HomePage);
+                  context.pushNamed(Routes.Login);
+
                 },
                 child: Text("Skip",style: TextStyle(
                   fontSize: 20,

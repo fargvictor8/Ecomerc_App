@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:untitled/core/Routing/routes.dart';
+import 'package:untitled/features/auth/Login/ui/screens/login.dart';
 
 import '../../features/presentation/view/widgets/home_Page.dart';
 import '../../features/presentation/view/widgets/splssh_screen.dart';
@@ -17,6 +18,8 @@ class AppRouter {
         return _createRoute(HomePage());
       case Routes.OnboardingPage:
         return _createRoute(OnboardingPage());
+      case Routes.Login:
+        return _createRoute(Login());
       default:
         return MaterialPageRoute(
           settings: settings,

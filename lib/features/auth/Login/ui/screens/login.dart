@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:untitled/core/Routing/routes.dart';
 import 'package:untitled/core/constants/app_assets.dart';
 import 'package:untitled/core/extensions/navigation_extensions.dart';
 import 'package:untitled/core/themes/app_color.dart';
@@ -10,7 +11,8 @@ import 'package:untitled/core/widgets/custom_login_icon.dart';
 import 'package:untitled/core/widgets/custom_text_auth.dart';
 import 'package:untitled/core/widgets/custom_text_form_fild.dart';
 import 'package:untitled/features/auth/Login/ui/cubit/login_cubit.dart';
-import 'package:untitled/core/utils/appuits.dart'; // تأكد من أن هذه الدالة تتحقق من صحة الإيميل
+import 'package:untitled/core/utils/appuits.dart';
+import 'package:untitled/features/auth/singup/ui/cubit/sign_up.dart'; // تأكد من أن هذه الدالة تتحقق من صحة الإيميل
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -156,7 +158,7 @@ class _LoginState extends State<Login> {
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = (){
-                                  //context.pushReplacementNamed(ro),
+                                  context.pushReplacementNamed(Routes.singupScreen);
                                     print("Sign UP");
                                   },
                               )

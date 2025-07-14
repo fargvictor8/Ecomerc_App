@@ -38,7 +38,8 @@ class _LoginState extends State<SignUpScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTextAuth(text: "Welcome\nBack!"),
+                    //Text Tittel
+                    CustomTextAuth(text: "Create An\nAccount"),
                     const SizedBox(height: 40),
 
                     // Email Field

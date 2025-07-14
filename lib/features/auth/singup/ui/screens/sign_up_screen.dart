@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untitled/core/constants/app_assets.dart';
-import 'package:untitled/core/extensions/navigation_extensions.dart';
 import 'package:untitled/core/themes/app_color.dart';
 import 'package:untitled/core/widgets/custom_bottun.dart';
 import 'package:untitled/core/widgets/custom_login_icon.dart';
@@ -12,14 +11,14 @@ import 'package:untitled/core/widgets/custom_text_form_fild.dart';
 import 'package:untitled/features/auth/Login/ui/cubit/login_cubit.dart';
 import 'package:untitled/core/utils/appuits.dart'; // تأكد من أن هذه الدالة تتحقق من صحة الإيميل
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SignUpScreen> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -121,19 +120,12 @@ class _LoginState extends State<Login> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                             CustomLoginIcon(imagePth: "assets/Images/google 1.png",
-                                 onTap: (){
-                               print("google");
-                             }),
+                             CustomLoginIcon(imagePth: "assets/Images/google 1.png"),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                child: CustomLoginIcon(imagePth: "assets/Images/apple 1.png",onTap: (){
-                                  print("Apple");
-                                }),
+                                child: CustomLoginIcon(imagePth: "assets/Images/apple 1.png"),
                               ),
-                              CustomLoginIcon(imagePth: "assets/Images/f 1.png",onTap: (){
-                                print("Facebook");
-                              }),
+                              CustomLoginIcon(imagePth: "assets/Images/f 1.png"),
 
                             ],
                           ),
@@ -148,7 +140,7 @@ class _LoginState extends State<Login> {
                         ),
                           children: [
                               TextSpan(
-                                text: "Sign Up",
+                                text: "Sing Up",
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -156,8 +148,7 @@ class _LoginState extends State<Login> {
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = (){
-                                  //context.pushReplacementNamed(ro),
-                                    print("Sign UP");
+                                    print("Sing UP");
                                   },
                               )
                           ]

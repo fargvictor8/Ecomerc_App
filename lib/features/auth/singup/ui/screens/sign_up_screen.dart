@@ -2,14 +2,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:untitled/core/Routing/routes.dart';
 import 'package:untitled/core/constants/app_assets.dart';
+import 'package:untitled/core/extensions/navigation_extensions.dart';
 import 'package:untitled/core/themes/app_color.dart';
 import 'package:untitled/core/widgets/custom_bottun.dart';
 import 'package:untitled/core/widgets/custom_login_icon.dart';
 import 'package:untitled/core/widgets/custom_text_auth.dart';
 import 'package:untitled/core/widgets/custom_text_form_fild.dart';
 import 'package:untitled/features/auth/Login/ui/cubit/login_cubit.dart';
-import 'package:untitled/core/utils/appuits.dart'; // تأكد من أن هذه الدالة تتحقق من صحة الإيميل
+import 'package:untitled/core/utils/appuits.dart';
+
+import '../cubit/sign_up.dart'; // تأكد من أن هذه الدالة تتحقق من صحة الإيميل
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -22,147 +26,193 @@ class _LoginState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginCubit(),
+      create: (context) => SignUpCubit(),
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 0,
         ),
-        body: BlocBuilder<LoginCubit, LoginState>(
-          builder: (context, state) {
-            final loginCubit = context.read<LoginCubit>();
+        body: SafeArea(
+          child: BlocBuilder<SignUpCubit, SignUpState>(
+            builder: (context, state) {
+              final signUpCubit = context.read<SignUpCubit>();
 
-            return Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Form(
-                key: loginCubit.formkey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //Text Tittel
-                    CustomTextAuth(text: "Create An\nAccount"),
-                    const SizedBox(height: 40),
+              return SingleChildScrollView(
+                // عشان لما الكيبورد يفتح ما يغطيش على الفورم
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Form(
+                    key: signUpCubit.formkey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //Text Tittel
+                        CustomTextAuth(text: "Create An\nAccount"),
+                        const SizedBox(height: 40),
 
-                    // Email Field
-                    CustomTextFormFild(
-                      hintText: "Username or Email",
-                      prefixIcon: Icons.person,
-                      keyboardType: TextInputType.emailAddress,
-                      controller: loginCubit.emilController,
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter your email";
-                        }
-                        if (!AppUits.isEmailValid(value.trim())) {
-                          return "Please enter a valid email address";
-                        }
-                        return null;
-                      },
-                    ),
+                        // Email Field
+                        CustomTextFormFild(
+                          hintText: "Username or Email",
+                          prefixIcon: Icons.person,
+                          keyboardType: TextInputType.emailAddress,
+                          controller: signUpCubit.emilController,
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter your email";
+                            }
+                            if (!AppUits.isEmailValid(value.trim())) {
+                              return "Please enter a valid email address";
+                            }
+                            return null;
+                          },
+                        ),
 
-                    const SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
-                    // Password Field
-                    CustomTextFormFild(
-                      hintText: "Password",
-                      prefixIcon: Icons.lock,
-                      obscureText: loginCubit.obscureText,
-                      controller: loginCubit.passwordController,
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter your password";
-                        }
-                        if (value.length < 6) {
-                          return "Password must be at least 6 characters";
-                        }
-                        return null;
-                      },
-                      suffixIcon: loginCubit.obscureText
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      onSuffixTap: () {
-                        setState(() {
-                          loginCubit.toggleobscureText();
-                        });
-                      },
-                    ),
+                        // Password Field
+                        CustomTextFormFild(
+                          hintText: "Password",
+                          prefixIcon: Icons.lock,
+                          obscureText: signUpCubit.obscureText,
+                          controller: signUpCubit.passwordController,
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter your password";
+                            }
+                            if (value.length < 6) {
+                              return "Password must be at least 6 characters";
+                            }
+                            return null;
+                          },
+                          suffixIcon: signUpCubit.obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          onSuffixTap: () {
+                            setState(() {
+                              signUpCubit.toggleobscureText();
+                            });
+                          },
+                        ),
 
-                  Align(
-                    alignment: AlignmentDirectional.centerEnd,
-                    child:   TextButton(onPressed: (){},
-                        child: Text("Forget Password ?",style: TextStyle(
-                            color: Colors.pink,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12
-                        ),)),
-                  ),
+                        const SizedBox(height: 15),
 
-                    const SizedBox(height: 30),
-                    //Login Button
-                   CustomLoginButton(
-                       onPressed: (){
-                     loginCubit.login();
+                        // Confirm Password Field
+                        CustomTextFormFild(
+                          hintText: "Confirm Password",
+                          prefixIcon: Icons.lock,
+                          obscureText: signUpCubit.obscureText2,
+                          controller: signUpCubit.confirmpasswordController,
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter your password";
+                            }
+                            if (value.length < 6) {
+                              return "Password must be at least 6 characters";
+                            }
+                            return null;
+                          },
+                          suffixIcon: signUpCubit.obscureText2
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          onSuffixTap: () {
+                            setState(() {
+                              signUpCubit.toggleobscureText2();
+                            });
+                          },
+                        ),
 
-                   }, text: "Login"),
-
-                    SizedBox(height: 70),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("- Or Continue with -",style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black
-                          ),),
-                          const SizedBox(height: 15),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                             CustomLoginIcon(imagePth: "assets/Images/google 1.png"),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                child: CustomLoginIcon(imagePth: "assets/Images/apple 1.png"),
+                        Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: TextButton(
+                            onPressed: () {},
+                            child: const Text(
+                              "Forget Password ?",
+                              style: TextStyle(
+                                color: Colors.pink,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
                               ),
-                              CustomLoginIcon(imagePth: "assets/Images/f 1.png"),
+                            ),
+                          ),
+                        ),
 
+                        const SizedBox(height: 20),
+
+                        // Login Button
+                        CustomLoginButton(
+                          onPressed: () {
+                            signUpCubit.signup();
+                          },
+                          text: "Create An Acount",
+                        ),
+
+                        const SizedBox(height: 70),
+
+                        Align(
+                          alignment: Alignment.center,
+                          child: Column(
+                            children: [
+                              const Text(
+                                "- By clicking the Register button, you agree to \n  the public offer -",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CustomLoginIcon(
+                                      imagePth: "assets/Images/google 1.png"),
+                                  const SizedBox(width: 12),
+                                  CustomLoginIcon(
+                                      imagePth: "assets/Images/apple 1.png"),
+                                  const SizedBox(width: 12),
+                                  CustomLoginIcon(
+                                      imagePth: "assets/Images/f 1.png"),
+                                ],
+                              ),
+
+                              const SizedBox(height: 25),
+
+                              RichText(
+                                text: TextSpan(
+                                  text: "I Already have an Account! ",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black54,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: "Login",
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.pink,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          context
+                                              .pushReplacementNamed(Routes.Login);
+                                          print("Login");
+                                        },
+                                    ),
+                                  ],
+                                ),
+                              )
                             ],
                           ),
-
-                          const SizedBox(height: 25),
-
-                        RichText(text: TextSpan(
-                          text: "Create An Account? ",
-                            style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black54
-                        ),
-                          children: [
-                              TextSpan(
-                                text: "Sing Up",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.pink
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = (){
-                                    print("Sing UP");
-                                  },
-                              )
-                          ]
-                        ))
-
-                        ],
-                      ),
-                    )
-                  ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

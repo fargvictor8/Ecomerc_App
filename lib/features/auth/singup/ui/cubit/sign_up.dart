@@ -9,9 +9,11 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   final TextEditingController emilController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmpasswordController = TextEditingController();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
 bool obscureText = true;
+  bool obscureText2 = true;
 
 void toggleobscureText(){
   obscureText = !obscureText;
@@ -19,7 +21,14 @@ void toggleobscureText(){
   emit(SignUpInitial());
 }
 
-  void login(){
+  void toggleobscureText2(){
+    obscureText2 = !obscureText2;
+
+    emit(SignUpInitial());
+  }
+
+
+  void signup(){
       if(formkey.currentState?.validate() == true){
         emit(SignUpSuccess());
       }

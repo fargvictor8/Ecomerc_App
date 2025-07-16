@@ -34,7 +34,7 @@ void toggleobscureText(){
   void signup() async{
       if(formkey.currentState?.validate() == true){
         emit(SignUpLoading());
-        if(passwordController.text != passwordController.text){
+        if(passwordController.text != confirmpasswordController.text){
           emit(SignUpError(message: "Password do not match"));
           print("Password do not match");
           return;

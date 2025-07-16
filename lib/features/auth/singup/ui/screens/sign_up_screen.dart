@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:untitled/Components/custom_loading.dart';
 import 'package:untitled/core/Routing/routes.dart';
 import 'package:untitled/core/constants/app_assets.dart';
 import 'package:untitled/core/extensions/navigation_extensions.dart';
@@ -35,37 +36,7 @@ class _LoginState extends State<SignUpScreen> {
           child: BlocConsumer<SignUpCubit, SignUpState>(
             listener: (context,state){
               if (state is SignUpLoading){
-                showDialog(
-                  context: context,
-                  barrierDismissible: false, // المستخدم مش هيقدر يقفلها من غير ما تخلص العملية
-                  builder: (context) => Dialog(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircularProgressIndicator(
-                            color: Colors.pink, // غير اللون حسب Theme بتاعك
-                            strokeWidth: 4,
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            "Loading...",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                showLoading(context);
 
               }
               if(state is SignUpSuccess){

@@ -32,7 +32,30 @@ class _LoginState extends State<SignUpScreen> {
           toolbarHeight: 0,
         ),
         body: SafeArea(
-          child: BlocBuilder<SignUpCubit, SignUpState>(
+          child: BlocConsumer<SignUpCubit, SignUpState>(
+            listener: (context,state){
+              if (state is SignUpLoading){
+                  showDialog(context: context,
+                    builder: (context) => Center(child: CircularProgressIndicator(),),);
+              }
+              if(state is SignUpSuccess){
+                Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Sign Up Success! "),
+                  backgroundColor: Colors.green, // اختياري: لون الخلفية
+                  duration: Duration(seconds: 2), // اختياري: مدة الظهور
+                ),
+              );
+              }
+              else if (state is SignUpError){
+                SnackBar(
+                  content: Text("Sign Failed:"),
+                  backgroundColor: Colors.pink, // اختياري: لون الخلفية
+                  duration: Duration(seconds: 2), // اختياري: مدة الظهور
+                );
+              }
+            },
             builder: (context, state) {
               final signUpCubit = context.read<SignUpCubit>();
 
@@ -48,7 +71,7 @@ class _LoginState extends State<SignUpScreen> {
                       children: [
                         //Text Tittel
                         CustomTextAuth(text: "Create An\nAccount"),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 45),
 
                         // Email Field
                         CustomTextFormFild(

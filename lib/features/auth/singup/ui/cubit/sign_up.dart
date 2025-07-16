@@ -8,6 +8,8 @@ part 'sign_up_state.dart';
 class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit() : super(SignUpInitial());
 
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   final TextEditingController emilController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmpasswordController = TextEditingController();
@@ -31,21 +33,24 @@ void toggleobscureText(){
 
   void signup() async{
       if(formkey.currentState?.validate() == true){
+        emit(SignUpLoading());
         try {
-          final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          await auth.createUserWithEmailAndPassword(
             email: emilController.text,
             password: passwordController.text,
           );
+          emit(SignUpSuccess());
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             print('The password provided is too weak.');
           } else if (e.code == 'email-already-in-use') {
             print('The account already exists for that email.');
           }
+          emit(SignUpError());
         } catch (e) {
+          emit(SignUpError());
           print(e);
         }
-        emit(SignUpSuccess());
       }
   }
 }

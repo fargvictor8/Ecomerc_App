@@ -34,6 +34,11 @@ void toggleobscureText(){
   void signup() async{
       if(formkey.currentState?.validate() == true){
         emit(SignUpLoading());
+        if(passwordController.text != passwordController.text){
+          emit(SignUpError(message: "Password do not match"));
+          print("Password do not match");
+          return;
+        }
         try {
           await auth.createUserWithEmailAndPassword(
             email: emilController.text,
@@ -46,9 +51,9 @@ void toggleobscureText(){
           } else if (e.code == 'email-already-in-use') {
             print('The account already exists for that email.');
           }
-          emit(SignUpError());
+          emit(SignUpError(message: e.code));
         } catch (e) {
-          emit(SignUpError());
+          emit(SignUpError(message: e.toString()));
           print(e);
         }
       }

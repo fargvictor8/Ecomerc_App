@@ -35,26 +35,94 @@ class _LoginState extends State<SignUpScreen> {
           child: BlocConsumer<SignUpCubit, SignUpState>(
             listener: (context,state){
               if (state is SignUpLoading){
-                  showDialog(context: context,
-                    builder: (context) => Center(child: CircularProgressIndicator(),),);
+                showDialog(
+                  context: context,
+                  barrierDismissible: false, // المستخدم مش هيقدر يقفلها من غير ما تخلص العملية
+                  builder: (context) => Dialog(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircularProgressIndicator(
+                            color: Colors.pink, // غير اللون حسب Theme بتاعك
+                            strokeWidth: 4,
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "Loading...",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+
               }
               if(state is SignUpSuccess){
-                Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Sign Up Success! "),
-                  backgroundColor: Colors.green, // اختياري: لون الخلفية
-                  duration: Duration(seconds: 2), // اختياري: مدة الظهور
-                ),
-              );
-              }
-              else if (state is SignUpError){
-                SnackBar(
-                  content: Text("Sign Failed:"),
-                  backgroundColor: Colors.pink, // اختياري: لون الخلفية
-                  duration: Duration(seconds: 2), // اختياري: مدة الظهور
+                context.back();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      children: [
+                        Icon(Icons.check_circle, color: Colors.white),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            "Sign Up Success!",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                    backgroundColor: Colors.green[600],
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    margin: EdgeInsets.all(16),
+                    duration: Duration(seconds: 3),
+                  ),
                 );
+
+                context.pushReplacementNamed(Routes.Login);
               }
+               if (state is SignUpError){
+
+                 ScaffoldMessenger.of(context).showSnackBar(
+                   SnackBar(
+                     content: Row(
+                       children: [
+                         Icon(Icons.check_circle, color: Colors.white),
+                         SizedBox(width: 10),
+                         Expanded(
+                           child: Text(
+                             "Sign Up Failed: ${state.message}",
+                             style: TextStyle(fontSize: 16),
+                           ),
+                         ),
+                       ],
+                     ),
+                     backgroundColor: Colors.red[600],
+                     behavior: SnackBarBehavior.floating,
+                     shape: RoundedRectangleBorder(
+                       borderRadius: BorderRadius.circular(12),
+                     ),
+                     margin: EdgeInsets.all(16),
+                     duration: Duration(seconds: 3),
+                   ),
+                 );
+                 context.back();
+               }
             },
             builder: (context, state) {
               final signUpCubit = context.read<SignUpCubit>();
